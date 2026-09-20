@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Environment variables - never commit real secrets!
+.env
+
+# Logs
+logs/
+*.log
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# npm debug logs
+npm-debug.log*
