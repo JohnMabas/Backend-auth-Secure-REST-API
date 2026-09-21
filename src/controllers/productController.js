@@ -1,15 +1,10 @@
-// productController: CRUD operations against the in-memory product store.
-// Access control happens in the routes (authenticate + authorize), so these
-// handlers only deal with "how" not "who is allowed".
+
 
 const AppError = require("../utils/AppError");
 const asyncHandler = require("../utils/asyncHandler");
 const productStore = require("../data/products");
 
-/**
- * GET /api/products
- * List all products. Admin and user allowed.
- */
+
 exports.getAllProducts = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
@@ -18,10 +13,7 @@ exports.getAllProducts = asyncHandler(async (req, res) => {
   });
 });
 
-/**
- * GET /api/products/:id
- * Fetch a single product, 404 when it does not exist.
- */
+
 exports.getProductById = asyncHandler(async (req, res) => {
   const product = productStore.findProductById(req.params.id);
   if (!product) {
@@ -35,9 +27,7 @@ exports.getProductById = asyncHandler(async (req, res) => {
   });
 });
 
-/**
- * POST /api/products  (admin only)
- */
+
 exports.createProduct = asyncHandler(async (req, res) => {
   const { name, description, price } = req.validatedBody;
 
@@ -50,9 +40,7 @@ exports.createProduct = asyncHandler(async (req, res) => {
   });
 });
 
-/**
- * PUT /api/products/:id  (admin only)
- */
+
 exports.updateProduct = asyncHandler(async (req, res) => {
   const product = productStore.updateProduct(req.params.id, req.validatedBody);
   if (!product) {
@@ -66,9 +54,7 @@ exports.updateProduct = asyncHandler(async (req, res) => {
   });
 });
 
-/**
- * DELETE /api/products/:id  (admin only)
- */
+
 exports.deleteProduct = asyncHandler(async (req, res) => {
   const deleted = productStore.deleteProduct(req.params.id);
   if (!deleted) {
