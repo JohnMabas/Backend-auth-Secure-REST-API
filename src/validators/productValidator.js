@@ -1,15 +1,7 @@
-// productValidator: validates and sanitizes product request bodies.
 
 const AppError = require("../utils/AppError");
 
-/**
- * Validate the payload for creating a product.
- * Rules:
- *  - name: required non-empty string
- *  - description: string (optional, may be empty)
- *  - price: number >= 0
- * Non-string/other unexpected field types are rejected.
- */
+
 function validateCreateProduct(body) {
   if (body.name === undefined || typeof body.name !== "string") {
     throw new AppError("name must be a non-empty string.", 400);
@@ -35,15 +27,11 @@ function validateCreateProduct(body) {
     throw new AppError("price must be a number greater than or equal to 0.", 400);
   }
 
-  // Only the allowed fields are forwarded to the controller.
   return { name, description, price: body.price };
 }
 
-/**
- * Validate the payload for updating a product (same rules, fields optional).
- */
+
 function validateUpdateProduct(body) {
-  // At least one recognized field must be present.
   if (
     body.name === undefined &&
     body.description === undefined &&
