@@ -1,5 +1,5 @@
 {
-  "name": "backend-auth-secure-rest-api",
+  "name": "banking system",
   "version": "1.0.0",
   "description": "A beginner-friendly backend authentication, authorization and secure REST API built with Node.js and Express.js",
   "main": "src/server.js",

@@ -23,7 +23,7 @@ module.exports = function authenticate(req, _res, next) {
     const decoded = jwt.verify(token, jwtSecret);
 
    
-    req.user = { id: decoded.id, email: decoded.email, role: decoded.role };
+    req.user = { id: decoded.id, email: decoded.email };
     return next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {

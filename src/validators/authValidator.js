@@ -1,11 +1,10 @@
-
 const AppError = require("../utils/AppError");
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NAME_MIN = 2;
 const NAME_MAX = 50;
 const PASSWORD_MIN = 6;
-const ALLOWED_ROLES = ["user", "admin"];
+const PIN_PATTERN = /^\d{4}$/;
 
 function requireStringField(body, field, label) {
   const value = body[field];
@@ -20,7 +19,6 @@ function validateRegister(body) {
   const name = requireStringField(body, "name", "name");
   const email = requireStringField(body, "email", "email");
   const password = requireStringField(body, "password", "password");
-  const role = requireStringField(body, "role", "role");
 
   const trimmedName = name.trim();
   if (trimmedName.length === 0) {
@@ -51,11 +49,7 @@ function validateRegister(body) {
     throw new AppError("password must contain at least one special character.", 400);
   }
 
-  if (!ALLOWED_ROLES.includes(role)) {
-    throw new AppError(`role must be one of: ${ALLOWED_ROLES.join(", ")}.`, 400);
-  }
-
-  return { name: trimmedName, email: normalizedEmail, password, role };
+  return { name: trimmedName, email: normalizedEmail, password };
 }
 
 
@@ -71,7 +65,64 @@ function validateLogin(body) {
   return { email: normalizedEmail, password };
 }
 
+
+function validateCreatePin(body) {
+  const pin = requireStringField(body, "pin", "pin");
+  if (!PIN_PATTERN.test(pin)) {
+    throw new AppError("pin must be a 4-digit number.", 400);
+  }
+  return { pin };
+}
+
+
+function validateUpdatePin(body) {
+  const currentPin = requireStringField(body, "currentPin", "currentPin");
+  const newPin = requireStringField(body, "newPin", "newPin");
+  if (!PIN_PATTERN.test(currentPin)) {
+    throw new AppError("currentPin must be a 4-digit number.", 400);
+  }
+  if (!PIN_PATTERN.test(newPin)) {
+    throw new AppError("newPin must be a 4-digit number.", 400);
+  }
+  return { currentPin, newPin };
+}
+
+
+function validateDeposit(body) {
+  const amount = body.amount;
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
+    throw new AppError("amount must be a positive number.", 400);
+  }
+  return { amount };
+}
+
+
+function validateTransfer(body) {
+  const recipientEmail = requireStringField(body, "recipientEmail", "recipientEmail");
+  const pin = requireStringField(body, "pin", "pin");
+  const amount = body.amount;
+
+  const normalizedEmail = recipientEmail.trim().toLowerCase();
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
+    throw new AppError("recipientEmail must be a valid email address.", 400);
+  }
+
+  if (!PIN_PATTERN.test(pin)) {
+    throw new AppError("pin must be a 4-digit number.", 400);
+  }
+
+  if (typeof amount !== "number" || !Number.isFinite(amount) || amount <= 0) {
+    throw new AppError("amount must be a positive number.", 400);
+  }
+
+  return { recipientEmail: normalizedEmail, pin, amount };
+}
+
 module.exports = {
   validateRegister,
   validateLogin,
+  validateCreatePin,
+  validateUpdatePin,
+  validateDeposit,
+  validateTransfer,
 };

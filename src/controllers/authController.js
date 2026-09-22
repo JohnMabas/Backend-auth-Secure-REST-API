@@ -11,13 +11,13 @@ const BCRYPT_SALT_ROUNDS = 10;
 
 
 function toPublicUser(user) {
-  const { password, ...publicUser } = user;
+  const { password, pin, ...publicUser } = user;
   return publicUser;
 }
 
 
 exports.register = asyncHandler(async (req, res) => {
-  const { name, email, password, role } = req.validatedBody;
+  const { name, email, password } = req.validatedBody;
 
   if (userStore.findUserByEmail(email)) {
     throw new AppError("Email is already registered.", 409);
@@ -29,7 +29,6 @@ exports.register = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
-    role,
   });
 
   res.status(201).json({
@@ -52,7 +51,7 @@ exports.login = asyncHandler(async (req, res) => {
   if (!passwordMatches) throw invalid;
 
   const token = jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
+    { id: user.id, email: user.email },
     jwtSecret,
     { expiresIn: jwtExpiresIn }
   );
