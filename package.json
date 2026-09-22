@@ -1,7 +1,7 @@
 {
   "name": "banking system",
   "version": "1.0.0",
-  "description": "A beginner-friendly backend authentication, authorization and secure REST API built with Node.js and Express.js",
+  "description": "A beginner-friendly banking REST API built with Node.js and Express.js.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
