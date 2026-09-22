@@ -35,7 +35,7 @@ exports.register = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     message: "User registered successfully.",
-    data: toPublicUser(user), // no password!
+    data: toPublicUser(user), 
   });
 });
 
