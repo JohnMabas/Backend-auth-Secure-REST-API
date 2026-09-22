@@ -31,3 +31,4 @@ A beginner-friendly banking REST API built with Node.js and Express.js.
 Send authenticated requests with header: `Authorization: Bearer <token>`
 
 Pins are stored as bcrypt hashes; passwords are hashed with bcrypt.# Banking-System
+# Banking-System
